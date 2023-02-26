@@ -1,4 +1,10 @@
 {
+  "name": "pekiraffle",
+  "version": "VA0.0.1",
+  "private": "true",
+  "scripts": {
+    "start": "node ./src/main"
+  },
   "dependencies": {
     "discord.js": "^14.7.1"
   }
