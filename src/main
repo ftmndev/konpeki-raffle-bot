@@ -1,27 +1,27 @@
-const { REST, Routes } = require('discord.js');
+// const Discord = require('discord.js');
 
-const client = new Discord.Client();
-//const token = the token file
-client.commands = new Discord.Collection();
-const prefix = '!';
-const commandFiles = fs
-	.readdirSync('./cmds/')
-	.filter(file => file.endsWith('.js'));
-for (const file of commandFiles) {
-	const command = require(`./cmds/${file}`);
-	client.commands.set(command.name, command);
-}
+// const client = new Discord.Client();
+// //const token = the token file
+// client.commands = new Discord.Collection();
+// const prefix = '!';
+// const commandFiles = fs
+// 	.readdirSync('./cmds/')
+// 	.filter(file => file.endsWith('.js'));
+// for (const file of commandFiles) {
+// 	const command = require(`./cmds/${file}`);
+// 	client.commands.set(command.name, command);
+// }
 
-//Status
-client.on('ready', () => {
-	client.user.setPresence({
-		status: 'online', //You can show online, idle busy invisible
-		activity: {
-			name: 'Watching for new raffle entries', //The message shown
-		}
-	});
-	client.user
-		.setUsername('PekiRaffle')
-		.then(user => console.log(`My current username is ${user.username}`))
-		.catch(console.error);
-});
+// //Status
+// client.on('ready', () => {
+// 	client.user.setPresence({
+// 		status: 'online', //You can show online, idle busy invisible
+// 		activity: {
+// 			name: 'Watching for new raffle entries', //The message shown under about me
+// 		}
+// 	});
+// 	client.user
+// 		.setUsername('PekiRaffle')
+// 		.then(user => console.log(`My current username is ${user.username}`))
+// 		.catch(console.error);
+// });
