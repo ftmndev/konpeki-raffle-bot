@@ -1,8 +1,11 @@
 - Brain:
     Bot interface
     Bot channel
-    Bot roles
 
 - E:
     Bot Commands
     Raffle backend
+
+
+NOTE: This will start the bot
+npm start

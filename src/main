@@ -1,27 +1,40 @@
-// const Discord = require('discord.js');
+const { REST, Routes } = require('discord.js');
+const { CLIENT_ID, TOKEN } = require('./dbid');
 
-// const client = new Discord.Client();
-// //const token = the token file
-// client.commands = new Discord.Collection();
-// const prefix = '!';
-// const commandFiles = fs
-// 	.readdirSync('./cmds/')
-// 	.filter(file => file.endsWith('.js'));
-// for (const file of commandFiles) {
-// 	const command = require(`./cmds/${file}`);
-// 	client.commands.set(command.name, command);
-// }
+const commands = [
+    {
+        name: 'ping',
+        description: 'Replies with the bot\'s ping.'
+    },
+    {
+        name: 'start-raffle',
+        description: 'Begins the Raffle.'
+    },
+    {
+        name: 'reroll',
+        description: 'Rerolls the winner.'
+    },
+    {
+        name: 'set-preset',
+        description: 'Set a preset raffle duration.'
+    }
+];
 
-// //Status
-// client.on('ready', () => {
-// 	client.user.setPresence({
-// 		status: 'online', //You can show online, idle busy invisible
-// 		activity: {
-// 			name: 'Watching for new raffle entries', //The message shown under about me
-// 		}
-// 	});
-// 	client.user
-// 		.setUsername('PekiRaffle')
-// 		.then(user => console.log(`My current username is ${user.username}`))
-// 		.catch(console.error);
-// });
+const rest = new REST({ version: '10' }).setToken(TOKEN);
+
+(async () => {
+    try {
+        console.log('Started refreshing application (/) commands.');
+
+        await rest.put(Routes.applicationCommands(CLIENT_ID), { body: commands });
+
+        console.log('Successfully reloaded application (/) commands.');
+    } 
+    catch (e) {
+        console.error(e);
+    }
+})();
+
+const setClient = require('./SetClient');
+
+setClient(TOKEN);
