@@ -1,10 +1,18 @@
-const { SharedNameAndDescription, EmbedBuilder } = require('discord.js');
-const { promises: fs } = require('fs');
+const { EmbedBuilder } = require('discord.js');
+const { promises: fs, fs } = require('fs');
+const Util = require('../backend/Util');
 
 const userdataPath = 'data/userdata';
 
 module.exports.cmd = async (msg) => {
-    //let data = await fs.readFile(userdataPath);
+    var users;
+    try { 
+        let data = await fs.readFile(userdataPath);
+        users = JSON.parse(data);
+    }
+    catch(e) { users = null }
+
+    
 
     // Add parse data into user structure
     // { name, entries, status }

@@ -1,8 +1,8 @@
-// const preset1 = Preset_1;
-// const preset2 = Preset_2;
-// const preset3 = Preset_3;
-// const preset4 = Preset_4;
-// const preset5 = Preset_5;
+const preset1 = undefined;
+const preset2 = undefined;
+const preset3 = undefined;
+const preset4 = undefined;
+const preset5 = undefined;
 
 module.exports.cmd = async (msg) => {
     await msg.reply('Set a Preset.');
