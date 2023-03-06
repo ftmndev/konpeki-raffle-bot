@@ -1,5 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
-const { promises: fs, fs } = require('fs');
+const { promises: fs } = require('fs');
 const Util = require('../backend/Util');
 
 const userdataPath = 'data/userdata';

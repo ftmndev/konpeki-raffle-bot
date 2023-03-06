@@ -1,4 +1,4 @@
-const preset1 = undefined;
+const preset1 = 5;
 const preset2 = undefined;
 const preset3 = undefined;
 const preset4 = undefined;
