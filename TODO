@@ -6,6 +6,8 @@
     Bot Commands
     Raffle backend
 
+- Bofh:
+    Help command when done
 
 NOTE: This will start the bot
 npm start
