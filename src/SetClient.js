@@ -18,7 +18,7 @@ function ActivateClient(TOKEN) {
             await msg.reply('You dont have the permissions to do that.');
             return;
         }*/
-        
+        msg.member.rol
         switch (msg.commandName) {
             case 'ping':
                 await ping.cmd(msg, client);
