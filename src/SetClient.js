@@ -4,8 +4,6 @@ const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 const startRaffle = require('./cmds/StartRaffle');
 const reroll = require('./cmds/Reroll');
 const setPreset = require('./cmds/SetPreset');
-const members = await message.guild.members.fetch();
-const randMember = members.random(); 
 
 function ActivateClient(TOKEN) {
     client.on('ready', () => {
@@ -23,11 +21,10 @@ function ActivateClient(TOKEN) {
         switch (msg.commandName)
         {
             case 'ping':
-                await msg.reply(`Pong🏓\nLatency is ${(Date.now()) - (msg.createdTimestamp)}ms. API Latency is ${Math.round(client.ws.ping)}ms`);
+                await ping.cmd(msg)
                 break;
             case 'start-raffle':
                 await startRaffle.cmd(msg);
-                await msg.reply(randMember);
                 break;
             case 'reroll':
                 await reroll.cmd(msg);
