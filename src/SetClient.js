@@ -4,6 +4,7 @@ const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 const startRaffle = require('./cmds/StartRaffle');
 const reroll = require('./cmds/Reroll');
 const setPreset = require('./cmds/SetPreset');
+const ping = require('./cmds/Ping');
 
 function ActivateClient(TOKEN) {
     client.on('ready', () => {
@@ -17,11 +18,10 @@ function ActivateClient(TOKEN) {
             await msg.reply('You dont have the permissions to do that.');
             return;
         }*/
-
-        switch (msg.commandName)
-        {
+        
+        switch (msg.commandName) {
             case 'ping':
-                await ping.cmd(msg)
+                await ping.cmd(msg, client);
                 break;
             case 'start-raffle':
                 await startRaffle.cmd(msg);
