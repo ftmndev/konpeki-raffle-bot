@@ -1,6 +1,7 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, Events } = require('discord.js');
 const { promises: fs } = require('fs');
 const Util = require('../backend/Util');
+const RaffleWatch = require('../backend/RaffleWatch');
 
 const userdataPath = 'data/userdata';
 
@@ -38,4 +39,6 @@ module.exports.cmd = async (msg, client) => {
     })
 
     const reactionMessage = await msg.channel.send({ embeds: [reactEmbed], components: [reactButton]})
+    
+    RaffleWatch(users);
 }
