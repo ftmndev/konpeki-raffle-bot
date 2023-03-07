@@ -24,7 +24,7 @@ function ActivateClient(TOKEN) {
                 await ping.cmd(msg, client);
                 break;
             case 'start-raffle':
-                await startRaffle.cmd(msg);
+                await startRaffle.cmd(msg, client);
                 break;
             case 'reroll':
                 await reroll.cmd(msg);
