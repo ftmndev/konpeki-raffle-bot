@@ -13,24 +13,28 @@ module.exports.cmd = async (msg, client) => {
     }
     catch(e) { users = null }
     
-    const verifiedMember = msg.guild.roles.cache.get('954586301972217917')
-    const raffleRole = msg.guild.roles.create({ name: "Raffle", reason: "Creating Raffle Role" })
+    const verifiedMember = msg.guild.roles.cache.find(role => role.name === 'Verified Member')
+
+    //Creates Raffle Role
+    msg.guild.roles.create({ name: "Raffle", reason: "Creating Raffle Role" })
 
     const Filter = (reaction, user) => user.id == msg.author.id
     
+    //The Raffle Annoucement Embed
     const reactEmbed = new EmbedBuilder()
         .setTitle('VOD REVIEW RAFFLE')
         .setDescription('React here to enter the raffle!')
 
+    //Raffle Annoucement Embed Button
     const reactButton = new ActionRowBuilder()
         .addComponents(new ButtonBuilder()
         .setCustomId('primary')
         .setLabel('Enter Raffle')
         .setStyle(ButtonStyle.Primary)
-        .setDisabled(!msg.member.roles.cache.some(role => role.id === '954586301972217917'))
+        .setDisabled(!verifiedMember)
         )
     
-    //Button Click
+    //Button Click Event
     client.on(Events.InteractionCreate, interaction => {
         if (!interaction.isButton()) return;
         let raffRole = msg.guild.roles.cache.find(role => role.name === 'Raffle')
@@ -38,7 +42,7 @@ module.exports.cmd = async (msg, client) => {
         interaction.reply('Added To Raffle')
     })
 
-    const reactionMessage = await msg.channel.send({ embeds: [reactEmbed], components: [reactButton]})
+    await msg.channel.send({ embeds: [reactEmbed], components: [reactButton]})
     
-    RaffleWatch(users);
+    // RaffleWatch(users);
 }
