@@ -17,6 +17,14 @@ const commands = [
     {
         name: 'set-preset',
         description: 'Set a preset raffle duration.'
+    },
+    {
+        name: 'entries',
+        description: 'Tells you how many entries you have in the raffle.'
+    },
+    {
+        name: 'help',
+        description: 'Provides all the commands and their descriptions.'
     }
 ];
 

@@ -5,6 +5,8 @@ const startRaffle = require('./cmds/StartRaffle');
 const reroll = require('./cmds/Reroll');
 const setPreset = require('./cmds/SetPreset');
 const ping = require('./cmds/Ping');
+const entries = require('./cmds/Entries');
+const help = require('./cmds/Help');
 
 function ActivateClient(TOKEN) {
     client.on('ready', () => {
@@ -18,7 +20,6 @@ function ActivateClient(TOKEN) {
             await msg.reply('You dont have the permissions to do that.');
             return;
         }*/
-        msg.member.rol
         switch (msg.commandName) {
             case 'ping':
                 await ping.cmd(msg, client);
@@ -31,6 +32,12 @@ function ActivateClient(TOKEN) {
                 break;
             case 'set-preset':
                 await setPreset.cmd(msg);
+                break;
+            case 'entries':
+                await entries.cmd(msg);
+                break;
+            case 'help':
+                await help.cmd(msg);
                 break;
         }
     });

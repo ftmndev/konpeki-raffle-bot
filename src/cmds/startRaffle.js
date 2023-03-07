@@ -2,6 +2,7 @@ const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, Events } = r
 const { promises: fs } = require('fs');
 const Util = require('../backend/Util');
 const RaffleWatch = require('../backend/RaffleWatch');
+const Presets = require('./SetPreset');
 
 const userdataPath = 'data/userdata';
 
@@ -12,20 +13,22 @@ module.exports.cmd = async (msg, client) => {
         users = JSON.parse(data);
     }
     catch(e) { users = null }
-    
-    const verifiedMember = msg.guild.roles.cache.find(role => role.name === 'Verified Member')
 
-    //Creates Raffle Role
-    msg.guild.roles.create({ name: "Raffle", reason: "Creating Raffle Role" })
+    // Creates Raffle Role
+    msg.guild.roles.create({ name: "Raffle", reason: "Creating Raffle Role" });
+    
+    // Get Roles
+    const verifiedMember = msg.guild.roles.cache.find(role => role.name === 'Verified Member');
+    const raffleRole = msg.guild.roles.cache.find(role => role.name === 'Raffle');
 
     const Filter = (reaction, user) => user.id == msg.author.id
     
-    //The Raffle Annoucement Embed
+    // The Raffle Annoucement Embed
     const reactEmbed = new EmbedBuilder()
         .setTitle('VOD REVIEW RAFFLE')
         .setDescription('React here to enter the raffle!')
 
-    //Raffle Annoucement Embed Button
+    // Raffle Annoucement Embed Button
     const reactButton = new ActionRowBuilder()
         .addComponents(new ButtonBuilder()
         .setCustomId('primary')
@@ -34,7 +37,7 @@ module.exports.cmd = async (msg, client) => {
         .setDisabled(!verifiedMember)
         )
     
-    //Button Click Event
+    // Button Click Event
     client.on(Events.InteractionCreate, interaction => {
         if (!interaction.isButton()) return;
         let raffRole = msg.guild.roles.cache.find(role => role.name === 'Raffle')
@@ -43,6 +46,10 @@ module.exports.cmd = async (msg, client) => {
     })
 
     await msg.channel.send({ embeds: [reactEmbed], components: [reactButton]})
-    
-    // RaffleWatch(users);
+
+    msg.reply('Started Raffle.');
+
+    console.log('Started Raffle');
+
+    RaffleWatch(users, raffleRole, Presets.preset1);
 }
