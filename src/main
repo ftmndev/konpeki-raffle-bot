@@ -1,5 +1,6 @@
 const { REST, Routes } = require('discord.js');
 const { CLIENT_ID, TOKEN } = require('./dbid');
+const setClient = require('./SetClient');
 
 const commands = [
     {
@@ -8,7 +9,8 @@ const commands = [
     },
     {
         name: 'start-raffle',
-        description: 'Begins the Raffle.'
+        description: 'Begins the Raffle.',
+
     },
     {
         name: 'reroll',
@@ -42,7 +44,5 @@ const rest = new REST({ version: '10' }).setToken(TOKEN);
         console.error(e);
     }
 })();
-
-const setClient = require('./SetClient');
 
 setClient(TOKEN);

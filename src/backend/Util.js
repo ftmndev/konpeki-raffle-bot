@@ -2,9 +2,11 @@ const { promises: fs } = require('fs');
 
 module.exports.FindUData = (utag, udata) => {
     // Change from linear search to something more viable for a server with lots of people
-    for (let i = 0; i < udata.length; i++) {
+    /*for (let i = 0; i < udata.length; i++) {
         if (udata[i].tag === utag) return i;
-    }
+    }*/
+
+    
 
     return null;
 }

@@ -24,11 +24,6 @@ async function watchRaffle(udata, role, timeMin, msg) {
 
     const update = async () => {
         while(Date.now() <= endDate) {
-            // Sort in background
-            Util.SortUData(udata)
-                .then((ret) => { tudata = ret })
-                .catch((e) => console.log('Nothing to sort.'));
-            
             await wait(2000);
             await msg.guild.members.fetch();
             let enteredUsers = role.members.map(m=>m);
@@ -54,7 +49,7 @@ async function watchRaffle(udata, role, timeMin, msg) {
                 }
             });
 
-            udata = tudata;
+            udata = await Util.SortUData(udata);
         }
     }
 
