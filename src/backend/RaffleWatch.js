@@ -14,7 +14,8 @@ async function watchRaffle(udata, role, timeMin, msg) {
 
     const update = async () => {
         while(Date.now() <= endDate) {
-            console.log(msg.guild.roles.cache.get(role.id).members.map(m=>m.users));
+            let guild = await msg.guild.fetch();
+            console.log(guild.roles.cache.get(role.id).members.map(m=>m.users));
             await setTimeout(1000);
         }
     }
