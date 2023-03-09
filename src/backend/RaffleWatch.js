@@ -1,25 +1,30 @@
-module.exports = (udata, role, timeMin) => {
-    watchRaffle(udata, role, timeMin);
+const { setTimeout } = require('timers/promises');
+
+module.exports.raffleRunning = false;
+module.exports = async (udata, role, timeMin, msg) => {
+    module.exports.raffleRunning = true;
+    await watchRaffle(udata, role, timeMin, msg);
 }
 
-function watchRaffle(udata, role, timeMin) {
-    let endDate = Date.now() + .5 * 60000;
-    let end = false;
+async function watchRaffle(udata, role, timeMin, msg) {
+    let raffleTime = timeMin * 60000;
+    let endDate = Date.now() + raffleTime;
 
-    const update = () => {
-        if (Date.now() >= endDate) {
-            end = true;
-            return;
+    console.log(`Raffle started at ${Date.now()}.\nRaffle ends at ${endDate}`);
+
+    const update = async () => {
+        while(Date.now() <= endDate) {
+            console.log(msg.guild.roles.cache.get(role.id).members.map(m=>m.users));
+            await setTimeout(1000);
         }
-        console.log('time');
-
-        setTimeout(update, 1000);
     }
 
-    update();
+    const end = () => {
+        module.exports.raffleRunning = false;
+        msg.channel.send('The raffle has ended');
+    }
 
-    (async()=>{while(!end);})();
+    await update();
 
-    console.log('end');
+    end();
 }
-

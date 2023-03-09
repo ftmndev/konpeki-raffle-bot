@@ -15,41 +15,41 @@ module.exports.cmd = async (msg, client) => {
     catch(e) { users = null }
 
     // Creates Raffle Role
-    msg.guild.roles.create({ name: "Raffle", reason: "Creating Raffle Role" });
+    const raffleRole = await msg.guild.roles.create({ name: "Raffle", reason: "Creating Raffle Role" });
     
     // Get Roles
     const verifiedMember = msg.guild.roles.cache.find(role => role.name === 'Verified Member');
-    const raffleRole = msg.guild.roles.cache.find(role => role.name === 'Raffle');
-
-    const Filter = (reaction, user) => user.id == msg.author.id
     
     // The Raffle Annoucement Embed
     const reactEmbed = new EmbedBuilder()
         .setTitle('VOD REVIEW RAFFLE')
-        .setDescription('React here to enter the raffle!')
+        .setDescription('React here to enter the raffle!');
 
     // Raffle Annoucement Embed Button
     const reactButton = new ActionRowBuilder()
         .addComponents(new ButtonBuilder()
-        .setCustomId('primary')
-        .setLabel('Enter Raffle')
-        .setStyle(ButtonStyle.Primary)
-        .setDisabled(!verifiedMember)
-        )
+            .setCustomId('primary')
+            .setLabel('Enter Raffle')
+            .setStyle(ButtonStyle.Primary)
+        );
     
     // Button Click Event
     client.on(Events.InteractionCreate, interaction => {
         if (!interaction.isButton()) return;
-        let raffRole = msg.guild.roles.cache.find(role => role.name === 'Raffle')
-        msg.member.roles.add(raffRole)
-        interaction.reply('Added To Raffle')
-    })
+        if (msg.member.roles.cache.find(role => role.name === 'Verified Member') == undefined) {
+            interaction.reply('You must be a verified member to enter the raffle.');
+            return;
+        }
 
-    await msg.channel.send({ embeds: [reactEmbed], components: [reactButton]})
+        msg.member.roles.add(raffleRole);
+        interaction.reply('You entered the raffle.');
+    });
 
-    msg.reply('Started Raffle.');
+    await msg.channel.send({ embeds: [reactEmbed], components: [reactButton] });
+
+    msg.reply({ content: 'Started Raffle', ephemeral: true });
 
     console.log('Started Raffle');
 
-    RaffleWatch(users, raffleRole, Presets.preset1);
+    RaffleWatch(users, raffleRole, Presets.preset1, msg);
 }
