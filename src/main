@@ -1,33 +1,41 @@
-const { REST, Routes } = require('discord.js');
+const { REST, Routes, SlashCommandBuilder } = require('discord.js');
 const { CLIENT_ID, TOKEN } = require('./dbid');
 const setClient = require('./SetClient');
 
 const commands = [
-    {
-        name: 'ping',
-        description: 'Replies with the bot\'s ping.'
-    },
-    {
-        name: 'start-raffle',
-        description: 'Begins the Raffle.',
-
-    },
-    {
-        name: 'reroll',
-        description: 'Rerolls the winner.'
-    },
-    {
-        name: 'set-preset',
-        description: 'Set a preset raffle duration.'
-    },
-    {
-        name: 'entries',
-        description: 'Tells you how many entries you have in the raffle.'
-    },
-    {
-        name: 'help',
-        description: 'Provides all the commands and their descriptions.'
-    }
+    new SlashCommandBuilder()
+        .setName('ping')
+        .setDescription('Replies with the bot\'s ping.'),
+    new SlashCommandBuilder()
+        .setName('start-raffle')
+        .setDescription('Begins the raffle.')
+        .addStringOption(option =>
+            option.setName('preset')
+            .setDescription('The preset duration to use')
+            .setRequired(true)),
+    new SlashCommandBuilder()
+        .setName('reroll')
+        .setDescription('Rerolls the winner'),
+    new SlashCommandBuilder()
+        .setName('set-preset')
+        .setDescription('Sets the desired preset with the given duration (mins).')
+        .addStringOption(option =>
+            option.setName('preset-name')
+            .setDescription('The index of the preset to add.')
+            .setRequired(true))
+        .addIntegerOption(option => 
+            option.setName('duration')
+            .setDescription('The duration of the raffle in minutes.')
+            .setRequired(true)),
+    new SlashCommandBuilder()
+        .setName('list-presets')
+        .setDescription('Lists all presets.'),
+    new SlashCommandBuilder()
+        .setName('entries')
+        .setDescription('Tells you how many entries you have in the current raffle'),
+    new SlashCommandBuilder()
+        .setName('help')
+        .setDescription('Provides extended details on every slash command.')
 ];
 
 const rest = new REST({ version: '10' }).setToken(TOKEN);

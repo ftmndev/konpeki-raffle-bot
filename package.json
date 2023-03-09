@@ -1,6 +1,6 @@
 {
   "name": "pekiraffle",
-  "version": "VB1.2.5",
+  "version": "VB1.3.0",
   "private": "true",
   "scripts": {
     "start": "node ./src/main"

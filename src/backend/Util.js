@@ -1,12 +1,20 @@
 const { promises: fs } = require('fs');
 
 module.exports.FindUData = (utag, udata) => {
-    // Change from linear search to something more viable for a server with lots of people
-    /*for (let i = 0; i < udata.length; i++) {
-        if (udata[i].tag === utag) return i;
-    }*/
+    // Binary search for tag
+    utag = utag.toUpperCase();
 
-    
+    let l = 0,
+        r = udata.length;
+
+    while (l <= r) {
+        let m = Math.floor((l + r) / 2);
+        let a = udata[m].tag.toUpperCase();
+
+        if (a < utag) l = m + 1;
+        else if (a > utag) r = m - 1;
+        else return m;
+    }
 
     return null;
 }
@@ -74,6 +82,27 @@ module.exports.MarkFinished = (udata) => {
     });
 
     return udata;
+}
+
+module.exports.GetPresets = async (path) => {
+    var pdata;
+    
+    try {
+        let data = await fs.readFile(path);
+        pdata = JSON.parse(data);
+    }
+    catch (e) {
+        pdata = null;
+        console.log(e);
+    }
+
+    if (pdata == null) pdata = {};
+
+    return pdata;
+}
+
+module.exports.GetPresetTime = (presetName) => {
+    
 }
 
 module.exports.RandomInt = (max) => {

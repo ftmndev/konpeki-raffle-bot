@@ -82,7 +82,7 @@ async function watchRaffle(udata, role, timeMin, msg) {
         console.log('Saving UData');
         await Util.SetUData(userdataPath, udata); // save udata
 
-        console.log('UData Saved. Closing Raffle.');
+        console.log('UData Saved. Closing Raffle');
     }
 
     await update();
