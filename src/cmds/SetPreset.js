@@ -1,4 +1,4 @@
-var preset1 = .5;
+var preset1 = .75;
 var preset2 = undefined;
 var preset3 = undefined;
 var preset4 = undefined;

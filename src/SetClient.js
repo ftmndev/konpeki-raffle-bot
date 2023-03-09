@@ -1,5 +1,5 @@
-const { Client, GatewayIntentBits } = require('discord.js');
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+const { Client, Events, GatewayIntentBits } = require('discord.js');
+const client = new Client({ intents: [GatewayIntentBits.Guilds|GatewayIntentBits.GuildMembers|GatewayIntentBits.GuildScheduledEvents] });
 
 const startRaffle = require('./cmds/StartRaffle');
 const reroll = require('./cmds/Reroll');
@@ -13,7 +13,7 @@ function ActivateClient(TOKEN) {
         console.log(`Logged in as ${client.user.tag}`);
     });
 
-    client.on('interactionCreate', async (msg) => {
+    client.on(Events.InteractionCreate, async (msg) => {
         if (!msg.isChatInputCommand()) return;
 
         /*if (!msg.member.permissions.has('8')) {
@@ -23,25 +23,50 @@ function ActivateClient(TOKEN) {
 
         switch (msg.commandName) {
             case 'ping':
-                await ping.cmd(msg, client);
+                ping.cmd(msg, client);
                 break;
             case 'start-raffle':
-                await startRaffle.cmd(msg, client);
+                startRaffle.cmd(msg, client);
                 break;
             case 'reroll':
-                await reroll.cmd(msg);
+                reroll.cmd(msg);
                 break;
             case 'set-preset':
-                await setPreset.cmd(msg);
+                setPreset.cmd(msg);
                 break;
             case 'entries':
-                await entries.cmd(msg);
+                entries.cmd(msg);
                 break;
             case 'help':
-                await help.cmd(msg);
+                help.cmd(msg);
                 break;
         }
     });
+
+    client.on(Events.InteractionCreate, async (msg) => {
+        if (!msg.isButton()) return;
+        if (msg.member.roles.cache.find(role => role.name === 'Verified Member') == undefined) {
+            await msg.reply({ 
+                content: 'You must be a verified member to enter the raffle.', 
+                ephemeral: true
+            });
+            return;
+        }
+        if (msg.member.roles.cache.find(role => role.id === startRaffle.raffleRole.id) != undefined) { 
+            await msg.reply({
+                content: 'You have already joined the raffle.',
+                ephemeral: true
+            });
+            return;
+        }
+
+        msg.member.roles.add(startRaffle.raffleRole);
+        await msg.reply({ 
+            content: 'You entered the raffle.', 
+            ephemeral: true 
+        });
+    });
+
 
     client.login(TOKEN);
 }

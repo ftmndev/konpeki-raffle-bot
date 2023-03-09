@@ -1,20 +1,10 @@
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, Events } = require('discord.js');
-const { promises: fs } = require('fs');
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } = require('discord.js');
 const RaffleWatch = require('../backend/RaffleWatch');
 const Presets = require('./SetPreset');
 
-const userdataPath = 'data/userdata';
-
 module.exports.cmd = async (msg, client) => {
-    var users;
-    try { 
-        let data = await fs.readFile(userdataPath);
-        users = JSON.parse(data);
-    }
-    catch(e) { users = null }
-
     // Creates Raffle Role
-    const raffleRole = await msg.guild.roles.create({ name: "Raffle", reason: "Creating Raffle Role" });
+    module.exports.raffleRole = await msg.guild.roles.create({ name: "Raffle", reason: "Creating Raffle Role" });
     
     // The Raffle Annoucement Embed
     const reactEmbed = new EmbedBuilder()
@@ -30,16 +20,6 @@ module.exports.cmd = async (msg, client) => {
         );
     
     // Button Click Event
-    client.on(Events.InteractionCreate, interaction => {
-        if (!interaction.isButton()) return;
-        if (msg.member.roles.cache.find(role => role.name === 'Verified Member') == undefined) {
-            interaction.reply({ content: 'You must be a verified member to enter the raffle.', ephemeral: true });
-            return;
-        }
-
-        msg.member.roles.add(raffleRole);
-        interaction.reply({ content: 'You entered the raffle.', ephemeral: true });
-    });
 
     await msg.channel.send({ embeds: [reactEmbed], components: [reactButton] });
 
@@ -47,5 +27,5 @@ module.exports.cmd = async (msg, client) => {
 
     console.log('Started Raffle');
 
-    RaffleWatch(users, raffleRole, Presets.preset1, msg);
+    RaffleWatch(module.exports.raffleRole, Presets.preset1, msg);
 }
