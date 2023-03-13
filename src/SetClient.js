@@ -5,6 +5,7 @@ const startRaffle = require('./cmds/StartRaffle');
 const reroll = require('./cmds/Reroll');
 const setPreset = require('./cmds/SetPreset');
 const ping = require('./cmds/Ping');
+const listPresets = require('./cmds/ListPresets');
 const entries = require('./cmds/Entries');
 const help = require('./cmds/Help');
 
@@ -36,6 +37,9 @@ function ActivateClient(TOKEN) {
                 break;
             case 'entries':
                 entries.cmd(msg);
+                break;
+            case 'list-presets':
+                listPresets.cmd(msg);
                 break;
             case 'help':
                 help.cmd(msg);
