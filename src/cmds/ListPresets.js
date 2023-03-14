@@ -4,7 +4,7 @@ const Util = require('../backend/Util');
 const presetdataPath = 'data/presets';
 
 module.exports.cmd = async (msg) => {
-    var presets = await Util.GetPresets('data/presets');
+    var presets = Util.presets;
     presets = JSON.stringify(presets)
         .replaceAll('{', '')
         .replaceAll('}', '')
@@ -16,5 +16,8 @@ module.exports.cmd = async (msg) => {
         .setTitle('Presets: ')
         .setDescription(presets);
 
-    msg.reply({ embeds: [embed] });
+    msg.reply({ 
+        embeds: [embed], 
+        ephemeral: true 
+    });
 }

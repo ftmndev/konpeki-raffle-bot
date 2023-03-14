@@ -7,6 +7,9 @@ const setPreset = require('./cmds/SetPreset');
 const ping = require('./cmds/Ping');
 const listPresets = require('./cmds/ListPresets');
 const entries = require('./cmds/Entries');
+const removePreset = require('./cmds/RemovePreset');
+const setRole = require('./cmds/SetRole');
+const removeRole = require('./cmds/RemoveRole');
 const help = require('./cmds/Help');
 
 function ActivateClient(TOKEN) {
@@ -17,15 +20,26 @@ function ActivateClient(TOKEN) {
     client.on(Events.InteractionCreate, async (msg) => {
         if (!msg.isChatInputCommand()) return;
 
-        /*if (!msg.member.permissions.has('8')) {
-            await msg.reply('You dont have the permissions to do that.');
-            return;
-        }*/
-        
+        // Commands for everyone
         switch (msg.commandName) {
             case 'ping':
-                ping.cmd(msg, client);
+                ping.cmd(msg);
                 break;
+            case 'entries':
+                entries.cmd(msg);
+                break;
+            case 'help':
+                help.cmd(msg);
+                break;
+        }
+
+        if (!msg.member.permissions.has('8')) {
+            await msg.reply('You dont have the permissions to do that.');
+            return;
+        }
+        
+        // Commands for admins or higher
+        switch (msg.commandName) {
             case 'start-raffle':
                 startRaffle.cmd(msg, client);
                 break;
@@ -35,14 +49,17 @@ function ActivateClient(TOKEN) {
             case 'set-preset':
                 setPreset.cmd(msg);
                 break;
-            case 'entries':
-                entries.cmd(msg);
-                break;
             case 'list-presets':
                 listPresets.cmd(msg);
                 break;
-            case 'help':
-                help.cmd(msg);
+            case 'remove-preset':
+                removePreset.cmd(msg);
+                break;
+            case 'set-role':
+                setRole.cmd(msg);
+                break;
+            case 'remove-role':
+                removeRole.cmd(msg);
                 break;
         }
     });

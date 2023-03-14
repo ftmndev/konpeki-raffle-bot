@@ -1,6 +1,5 @@
 const wait = require('timers/promises').setTimeout;
 const Util = require('./Util');
-const RoleID = require('./RoleIDs');
 const RollWinner = require('./RollWinner');
 
 const userdataPath = 'data/userdata';
@@ -18,7 +17,6 @@ module.exports = async (role, timeMin, msg) => {
 async function watchRaffle(udata, role, timeMin, msg) {
     var raffleTime = timeMin * 60000;
     var endDate = Date.now() + raffleTime;
-    var tudata = udata;
 
     console.log(`Raffle started at ${Date.now()}.\nRaffle ends at ${endDate}\nRaffle lasts for ${timeMin}min.`);
 
@@ -66,6 +64,8 @@ async function watchRaffle(udata, role, timeMin, msg) {
 
         var winner = RollWinner(udata);
 
+        udata = Util.MarkWinner(winner, udata);
+
         console.log(`Winner: ${winner}`);
         try {
             msg.channel.send(`The winner is <@${msg.guild.members.cache.find(m=>m.user.tag===winner).id}>!`);
@@ -80,7 +80,7 @@ async function watchRaffle(udata, role, timeMin, msg) {
 
         udata = Util.MarkFinished(udata);
         console.log('Saving UData');
-        await Util.SetUData(userdataPath, udata); // save udata
+        await Util.SetUData(userdataPath, udata);
 
         console.log('UData Saved. Closing Raffle');
     }
@@ -91,20 +91,11 @@ async function watchRaffle(udata, role, timeMin, msg) {
 }
 
 function GetEntriesByRole(memberRoles) {
-    /*
-        1 - Verified Member 
-        2 - Server Booster
-        2 - Tier 1 Sub
-        3 - Moderator 
-        3 - Tier 2 Sub
-        5 - Tier 3 Sub 
-    */
+    var entries = 0;
 
-    return (memberRoles.find(role => role.id === RoleID.vmid) != undefined
-    ?1:0) + (memberRoles.find(role => role.id === RoleID.sbid) != undefined
-    ?2:0) + (memberRoles.find(role => role.id === RoleID.t1id) != undefined
-    ?2:0) + (memberRoles.find(role => role.id === RoleID.mid) != undefined
-    ?3:0) + (memberRoles.find(role => role.id === RoleID.t2id) != undefined
-    ?3:0) + (memberRoles.find(role => role.id === RoleID.t3id) != undefined
-    ?5:0);
+    Util.roles.forEach((role) => {
+        entries += (memberRoles.find(frole => frole.id === role.role)?role.entries:0);
+    });
+
+    return entries;
 }

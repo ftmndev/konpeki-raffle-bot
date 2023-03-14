@@ -1,15 +1,13 @@
-var preset1 = .75;
-var preset2 = undefined;
-var preset3 = undefined;
-var preset4 = undefined;
-var preset5 = undefined;
+const Util = require('../backend/Util');
 
 module.exports.cmd = async (msg) => {
-    await msg.reply('Set a Preset.');
-}
+    var presetName = msg.options.getString('preset-name');
+    var presetTime = msg.options.getNumber('duration');
 
-module.exports.preset1 = preset1;
-module.exports.preset2 = preset2;
-module.exports.preset3 = preset3;
-module.exports.preset4 = preset4;
-module.exports.preset5 = preset5;
+    await Util.SetPreset(presetName, presetTime);
+
+    msg.reply({
+        content: `Set the preset: ${presetName} to ${presetTime}min${presetTime>1?'s':''}`,
+        ephemeral: true
+    });
+}

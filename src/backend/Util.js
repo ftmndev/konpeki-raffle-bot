@@ -1,4 +1,9 @@
 const { promises: fs } = require('fs');
+const RollWinner = require('./RollWinner');
+
+const presetPath = 'data/presets';
+const userdataPath = 'data/userdata';
+const rolePath = 'data/roles';
 
 module.exports.FindUData = (utag, udata) => {
     // Binary search for tag
@@ -70,6 +75,40 @@ module.exports.GetBasket = (udata) => {
     return basket;
 }
 
+module.exports.RerollWinner = async () => {
+    var udata = await this.GetUData(userdataPath);
+    var basket = [];
+
+    udata.forEach((user) => {
+        if (!user.lastRaffle) return;
+        for (let i = 0; i < user.entries; i++) basket.push(user.tag);
+    });
+
+    var winner = RollWinner(basket);
+
+    udata = this.MarkWinner(winner, udata);
+
+    console.log('Sorting UData');
+    udata = await Util.SortUData(udata);
+
+    udata = Util.MarkFinished(udata);
+    console.log('Saving UData');
+    await Util.SetUData(userdataPath, udata);
+
+    console.log('UData Saved.');
+    return winner;
+}
+
+module.exports.MarkWinner = (utag, udata) => {
+    var index = this.FindUData(utag, udata);
+
+    if (index == null) return udata;
+
+    udata[m].entries = 0;
+
+    return udata;
+}
+
 module.exports.MarkFinished = (udata) => {
     udata.forEach((user) => {
         if (!user.participating) {
@@ -84,11 +123,38 @@ module.exports.MarkFinished = (udata) => {
     return udata;
 }
 
-module.exports.GetPresets = async (path) => {
+module.exports.SetPreset = async (presetName, presetTime) => {
+    module.exports.presets[presetName] = presetTime;
+
+    try {
+        var presets = JSON.stringify(module.exports.presets);
+        fs.writeFile(presetPath, presets, 'utf8');
+    }
+    catch (e) {
+        console.log(`Couldn\'t save presets\nError:\n${e}`);
+    }
+}
+
+module.exports.RemovePreset = async (presetName) => {
+    if (module.exports.presets[presetName] == undefined) return false;
+    delete module.exports.presets[presetName];
+
+    try {
+        var presets = JSON.stringify(module.exports.presets);
+        fs.writeFile(presetPath, presets, 'utf8');
+    }
+    catch (e) {
+        console.log(`Couldn\'t save presets\nError:\n${e}`);
+    }
+
+    return true;
+}
+
+module.exports.LoadPresets = async () => {
     var pdata;
     
     try {
-        let data = await fs.readFile(path);
+        let data = await fs.readFile(presetPath, 'utf8');
         pdata = JSON.parse(data);
     }
     catch (e) {
@@ -98,11 +164,54 @@ module.exports.GetPresets = async (path) => {
 
     if (pdata == null) pdata = {};
 
-    return pdata;
+    module.exports.presets = pdata;
 }
 
-module.exports.GetPresetTime = (presetName) => {
-    
+module.exports.LoadRoles = async () => {
+    var rdata;
+
+    try {
+        let data = await fs.readFile(rolePath, 'utf8');
+        rdata = JSON.parse(data);
+    }
+    catch (e) {
+        rdata = null;
+        console.log(e);
+    }
+
+    if (rdata == null) rdata = [];
+
+    module.exports.roles = rdata;
+}
+
+module.exports.SetRole = async (roleID, roleEntries) => {
+    module.exports.roles.push({ id: roleID, entries: roleEntries })
+
+    try {
+        var roles = JSON.stringify(module.exports.roles);
+        fs.writeFile(rolePath, roles, 'utf8');
+    }
+    catch (e) {
+        console.log(`Couldn\'t save roles\nError:\n${e}`);
+    }
+}
+
+module.exports.RemoveRole = async (roleID) => {
+    var index = module.exports.roles.findIndex(role => role.id === roleID);
+
+    if (index == -1) return false;
+
+    module.exports.roles.splice(index, 1);
+
+    try {
+        var roles = JSON.stringify(module.exports.roles);
+        fs.writeFile(rolePath, roles, 'utf8');
+    }
+    catch (e) {
+        console.log(`Couldn\'t save roles\nError:\n${e}`);
+    }
+
+    return true;
 }
 
 module.exports.RandomInt = (max) => {

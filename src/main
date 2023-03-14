@@ -1,6 +1,7 @@
 const { REST, Routes, SlashCommandBuilder } = require('discord.js');
 const { CLIENT_ID, TOKEN } = require('./dbid');
 const setClient = require('./SetClient');
+const Util = require('./backend/Util');
 
 const commands = [
     new SlashCommandBuilder()
@@ -21,9 +22,9 @@ const commands = [
         .setDescription('Sets the desired preset with the given duration (mins).')
         .addStringOption(option =>
             option.setName('preset-name')
-            .setDescription('The index of the preset to add.')
+            .setDescription('The name of the preset to add.')
             .setRequired(true))
-        .addIntegerOption(option => 
+        .addNumberOption(option => 
             option.setName('duration')
             .setDescription('The duration of the raffle in minutes.')
             .setRequired(true)),
@@ -31,11 +32,35 @@ const commands = [
         .setName('list-presets')
         .setDescription('Lists all presets.'),
     new SlashCommandBuilder()
+        .setName('remove-preset')
+        .setDescription('Removes the given preset')
+        .addStringOption(option => 
+            option.setName('preset-name')
+            .setDescription('The name of the preset to remove')
+            .setRequired(true)),
+    new SlashCommandBuilder()
         .setName('entries')
         .setDescription('Tells you how many entries you have in the current raffle'),
     new SlashCommandBuilder()
         .setName('help')
-        .setDescription('Provides extended details on every slash command.')
+        .setDescription('Provides extended details on every slash command.'),
+    new SlashCommandBuilder()
+        .setName('set-role')
+        .setDescription('Set a role a user could have to boost their entries.')
+        .addStringOption(option =>
+            option.setName('role-id')
+            .setDescription('The ID of the desired role.')
+            .setRequired(true))
+        .addIntegerOption(option => 
+            option.setName('entries')
+            .setDescription('The amount of entries to be given to the user if they have this role')
+            .setRequired(true)),
+    new SlashCommandBuilder()
+        .setName('remove-role')
+        .setDescription('Remove a role that could boost a users entries.')
+        .addStringOption(option => 
+            option.setName('role-id')
+            .setDescription('The ID of the desired role.'))
 ];
 
 const rest = new REST({ version: '10' }).setToken(TOKEN);
@@ -47,6 +72,8 @@ const rest = new REST({ version: '10' }).setToken(TOKEN);
         await rest.put(Routes.applicationCommands(CLIENT_ID), { body: commands });
 
         console.log('Successfully reloaded application (/) commands.');
+
+        await Util.LoadPresets();
     } 
     catch (e) {
         console.error(e);

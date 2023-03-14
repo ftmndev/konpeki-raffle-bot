@@ -1,6 +1,7 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } = require('discord.js');
 const RaffleWatch = require('../backend/RaffleWatch');
 const Presets = require('./SetPreset');
+const Util = require('../backend/Util');
 
 module.exports.cmd = async (msg, client) => {
     // Creates Raffle Role
@@ -27,5 +28,7 @@ module.exports.cmd = async (msg, client) => {
 
     console.log('Started Raffle');
 
-    RaffleWatch(module.exports.raffleRole, Presets.preset1, msg);
+    var presetName = msg.options.getString('preset');
+
+    RaffleWatch(module.exports.raffleRole, Util.presets[presetName], msg);
 }
