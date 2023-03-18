@@ -1,19 +1,40 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } = require('discord.js');
 const RaffleWatch = require('../backend/RaffleWatch');
-const Presets = require('./SetPreset');
 const Util = require('../backend/Util');
 
 module.exports.cmd = async (msg, client) => {
+    var presetName = msg.options.getString('preset');
+    var presetTime = Util.presets[presetName];
+
+    if (presetTime == undefined) {
+        msg.reply({ 
+            content: 'Invalid preset. Raffle did not start. Use "/list-presets" to see all set presets.', 
+            ephemeral: true 
+        });
+        return;
+    }
+
+    if (RaffleWatch.raffleRunning) {
+        msg.reply({
+            content: 'Raffle already running.',
+            ephemeral: true
+        });
+        return;
+    }
+
     // Creates Raffle Role
     module.exports.raffleRole = await msg.guild.roles.create({ name: "Raffle", reason: "Creating Raffle Role" });
     
+    var raffleName = msg.options.getString('raffle-name') ?? 'PEKIRAFFLE';
+    var raffleDesc = msg.options.getString('raffle-desc') ?? 'Enter by clicking the button below!';
+
     // The Raffle Annoucement Embed
-    const reactEmbed = new EmbedBuilder()
-        .setTitle('VOD REVIEW RAFFLE')
-        .setDescription('React here to enter the raffle!');
+    var reactEmbed = new EmbedBuilder()
+        .setTitle(raffleName)
+        .setDescription(raffleDesc);
 
     // Raffle Annoucement Embed Button
-    const reactButton = new ActionRowBuilder()
+    var reactButton = new ActionRowBuilder()
         .addComponents(new ButtonBuilder()
             .setCustomId('primary')
             .setLabel('Enter Raffle')
@@ -28,7 +49,5 @@ module.exports.cmd = async (msg, client) => {
 
     console.log('Started Raffle');
 
-    var presetName = msg.options.getString('preset');
-
-    RaffleWatch(module.exports.raffleRole, Util.presets[presetName], msg);
+    RaffleWatch(module.exports.raffleRole, presetTime, msg);
 }

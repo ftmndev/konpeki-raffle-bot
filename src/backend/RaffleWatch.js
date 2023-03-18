@@ -22,12 +22,13 @@ async function watchRaffle(udata, role, timeMin, msg) {
 
     const update = async () => {
         while(Date.now() <= endDate) {
+            module.exports.udata = udata;
             await wait(2000);
             await msg.guild.members.fetch();
             let enteredUsers = role.members.map(m=>m);
 
             enteredUsers.forEach(async (member) => {
-                var index = Util.FindUData(member.user.tag, udata);
+                var index = Util.FindUData(member.user.id, udata);
 
                 member = await member.fetch();
                 var memberRoles = member.roles.cache;
@@ -39,7 +40,7 @@ async function watchRaffle(udata, role, timeMin, msg) {
                 }
                 else if (index == null) {
                     udata.push({
-                        tag: member.user.tag,
+                        tag: member.user.id,
                         entries: GetEntriesByRole(memberRoles),
                         lastRaffle: false,
                         participating: true
@@ -68,7 +69,7 @@ async function watchRaffle(udata, role, timeMin, msg) {
 
         console.log(`Winner: ${winner}`);
         try {
-            msg.channel.send(`The winner is <@${msg.guild.members.cache.find(m=>m.user.tag===winner).id}>!`);
+            msg.channel.send(`The winner is <@${winner}>!`);
         }
         catch (e) {
             msg.channel.send(`The winner is ${winner}!`);
@@ -94,7 +95,7 @@ function GetEntriesByRole(memberRoles) {
     var entries = 0;
 
     Util.roles.forEach((role) => {
-        entries += (memberRoles.find(frole => frole.id === role.role)?role.entries:0);
+        entries += (memberRoles.find(frole => frole.id === role.id)?role.entries:0);
     });
 
     return entries;

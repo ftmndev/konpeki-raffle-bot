@@ -13,12 +13,18 @@ module.exports.FindUData = (utag, udata) => {
         r = udata.length;
 
     while (l <= r) {
+        try {
         let m = Math.floor((l + r) / 2);
         let a = udata[m].tag.toUpperCase();
 
         if (a < utag) l = m + 1;
         else if (a > utag) r = m - 1;
         else return m;
+        }
+        catch (e) { 
+            console.log('udata is empty');
+            return null;
+        }
     }
 
     return null;
@@ -104,7 +110,7 @@ module.exports.MarkWinner = (utag, udata) => {
 
     if (index == null) return udata;
 
-    udata[m].entries = 0;
+    udata[index].entries = 0;
 
     return udata;
 }

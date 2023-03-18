@@ -11,7 +11,7 @@ module.exports.cmd = async (msg) => {
     }
     else {
         msg.reply({
-            content: `Removed preset ${roleID}.`,
+            content: `Removed role ${roleID}.`,
             ephemeral: true
         });
     }

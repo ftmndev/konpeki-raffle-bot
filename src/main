@@ -13,7 +13,13 @@ const commands = [
         .addStringOption(option =>
             option.setName('preset')
             .setDescription('The preset duration to use')
-            .setRequired(true)),
+            .setRequired(true))
+        .addStringOption(option => 
+            option.setName('raffle-name')
+            .setDescription('The name of the raffle'))
+        .addStringOption(option => 
+            option.setName('raffle-desc')
+            .setDescription('The description of the raffle.')),
     new SlashCommandBuilder()
         .setName('reroll')
         .setDescription('Rerolls the winner'),
@@ -60,7 +66,8 @@ const commands = [
         .setDescription('Remove a role that could boost a users entries.')
         .addStringOption(option => 
             option.setName('role-id')
-            .setDescription('The ID of the desired role.'))
+            .setDescription('The ID of the desired role.')
+            .setRequired(true))
 ];
 
 const rest = new REST({ version: '10' }).setToken(TOKEN);
@@ -74,6 +81,7 @@ const rest = new REST({ version: '10' }).setToken(TOKEN);
         console.log('Successfully reloaded application (/) commands.');
 
         await Util.LoadPresets();
+        await Util.LoadRoles();
     } 
     catch (e) {
         console.error(e);
