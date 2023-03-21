@@ -17,14 +17,14 @@ module.exports = async (role, timeMin, msg) => {
 async function watchRaffle(udata, role, timeMin, msg) {
     var raffleTime = timeMin * 60000;
     var endDate = Date.now() + raffleTime;
-    var enteredUsers;
+    var enteredUsers = [];
 
     console.log(`Raffle started at ${Date.now()}.\nRaffle ends at ${endDate}\nRaffle lasts for ${timeMin}min.`);
 
     const update = async () => {
-        while(Date.now() <= endDate) {
+        while(Date.now() <= endDate && module.exports.raffleRunning) {
             module.exports.udata = udata;
-            await wait(2000);
+            await wait(3500);
             await msg.guild.members.fetch();
             enteredUsers = role.members.map(m=>m);
 
@@ -56,25 +56,28 @@ async function watchRaffle(udata, role, timeMin, msg) {
     const end = async () => {
         module.exports.raffleRunning = false;
 
-        msg.channel.send('The raffle has ended. Picking winner...');
         console.log('Raffle ended');
+        if (enteredUsers.length == 0) msg.channel.send('The raffle has ended. No entries.');
+        else {
+            msg.channel.send('The raffle has ended. Picking winner...');
 
-        await msg.guild.roles.fetch();
-        msg.guild.roles.delete(role, 'Raffle Ended')
-            .then(() => console.log('Raffle Role Removed'))
-            .catch(console.error);
+            await msg.guild.roles.fetch();
+            msg.guild.roles.delete(role, 'Raffle Ended')
+                .then(() => console.log('Raffle Role Removed'))
+                .catch(console.error);
 
-        var winner = RollWinner(udata);
+            var winner = RollWinner(udata);
 
-        udata = Util.MarkWinner(winner, udata);
+            udata = Util.MarkWinner(winner, udata);
 
-        console.log(`Winner: ${winner}`);
-        try {
-            msg.channel.send(`The winner is <@${winner}>!`);
-        }
-        catch (e) {
-            msg.channel.send(`The winner is ${winner}!`);
-            console.log(`Error setting @\n${e}`)
+            console.log(`Winner: ${winner}`);
+            try {
+                msg.channel.send(`The winner is <@${winner}>!`);
+            }
+            catch (e) {
+                msg.channel.send(`The winner is ${winner}!`);
+                console.log(`Error setting @\n${e}`)
+            }
         }
 
         console.log('Sorting UData');

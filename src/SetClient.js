@@ -10,6 +10,8 @@ const entries = require('./cmds/Entries');
 const removePreset = require('./cmds/RemovePreset');
 const setRole = require('./cmds/SetRole');
 const removeRole = require('./cmds/RemoveRole');
+const listUserEntries = require('./cmds/ListUserEntries');
+const endRaffle = require('./cmds/EndRaffle');
 
 const RaffleWatch = require('./backend/RaffleWatch');
 
@@ -58,6 +60,12 @@ function ActivateClient(TOKEN) {
                 break;
             case 'remove-role':
                 removeRole.cmd(msg);
+                break;
+            case 'list-user-entries':
+                listUserEntries.cmd(msg);
+                break;
+            case 'end-raffle':
+                endRaffle.cmd(msg);
                 break;
         }
     });

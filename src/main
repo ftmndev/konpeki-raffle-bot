@@ -64,7 +64,17 @@ const commands = [
         .addStringOption(option => 
             option.setName('role-id')
             .setDescription('The ID of the desired role.')
-            .setRequired(true))
+            .setRequired(true)),
+    new SlashCommandBuilder()
+        .setName('list-user-entries')
+        .setDescription('See a specific user\'s entries.')
+        .addStringOption(option => 
+            option.setName('user-id')
+            .setDescription('The id of the user.')
+            .setRequired(true)),
+    new SlashCommandBuilder()
+        .setName('end-raffle')
+        .setDescription('Ends any ongoing raffles.')
 ];
 
 const rest = new REST({ version: '10' }).setToken(TOKEN);
