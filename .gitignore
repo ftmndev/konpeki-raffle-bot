@@ -1,3 +1,5 @@
 .vscode
 src/dbid.js
-data
+data/presets
+data/roles
+data/userdata

@@ -17,6 +17,7 @@ module.exports = async (role, timeMin, msg) => {
 async function watchRaffle(udata, role, timeMin, msg) {
     var raffleTime = timeMin * 60000;
     var endDate = Date.now() + raffleTime;
+    var enteredUsers;
 
     console.log(`Raffle started at ${Date.now()}.\nRaffle ends at ${endDate}\nRaffle lasts for ${timeMin}min.`);
 
@@ -25,7 +26,7 @@ async function watchRaffle(udata, role, timeMin, msg) {
             module.exports.udata = udata;
             await wait(2000);
             await msg.guild.members.fetch();
-            let enteredUsers = role.members.map(m=>m);
+            enteredUsers = role.members.map(m=>m);
 
             enteredUsers.forEach(async (member) => {
                 var index = Util.FindUData(member.user.id, udata);
