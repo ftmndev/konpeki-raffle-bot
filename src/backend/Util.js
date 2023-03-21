@@ -134,7 +134,7 @@ module.exports.SetPreset = async (presetName, presetTime) => {
 
     try {
         var presets = JSON.stringify(module.exports.presets);
-        fs.writeFile(presetPath, presets, 'utf8');
+        await fs.writeFile(presetPath, presets, 'utf8');
     }
     catch (e) {
         console.log(`Couldn\'t save presets\nError:\n${e}`);
@@ -147,7 +147,7 @@ module.exports.RemovePreset = async (presetName) => {
 
     try {
         var presets = JSON.stringify(module.exports.presets);
-        fs.writeFile(presetPath, presets, 'utf8');
+        await fs.writeFile(presetPath, presets, 'utf8');
     }
     catch (e) {
         console.log(`Couldn\'t save presets\nError:\n${e}`);
@@ -195,7 +195,7 @@ module.exports.SetRole = async (roleID, roleEntries) => {
 
     try {
         var roles = JSON.stringify(module.exports.roles);
-        fs.writeFile(rolePath, roles, 'utf8');
+        await fs.writeFile(rolePath, roles, 'utf8');
     }
     catch (e) {
         console.log(`Couldn\'t save roles\nError:\n${e}`);
@@ -211,7 +211,7 @@ module.exports.RemoveRole = async (roleID) => {
 
     try {
         var roles = JSON.stringify(module.exports.roles);
-        fs.writeFile(rolePath, roles, 'utf8');
+        await fs.writeFile(rolePath, roles, 'utf8');
     }
     catch (e) {
         console.log(`Couldn\'t save roles\nError:\n${e}`);
