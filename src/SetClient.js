@@ -10,7 +10,6 @@ const entries = require('./cmds/Entries');
 const removePreset = require('./cmds/RemovePreset');
 const setRole = require('./cmds/SetRole');
 const removeRole = require('./cmds/RemoveRole');
-const help = require('./cmds/Help');
 
 const RaffleWatch = require('./backend/RaffleWatch');
 
@@ -25,13 +24,10 @@ function ActivateClient(TOKEN) {
         // Commands for everyone
         switch (msg.commandName) {
             case 'ping':
-                ping.cmd(msg);
+                ping.cmd(msg, client);
                 break;
             case 'entries':
                 entries.cmd(msg);
-                break;
-            case 'help':
-                help.cmd(msg);
                 break;
         }
 

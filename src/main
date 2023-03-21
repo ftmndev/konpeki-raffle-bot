@@ -48,9 +48,6 @@ const commands = [
         .setName('entries')
         .setDescription('Tells you how many entries you have in the current raffle'),
     new SlashCommandBuilder()
-        .setName('help')
-        .setDescription('Provides extended details on every slash command.'),
-    new SlashCommandBuilder()
         .setName('set-role')
         .setDescription('Set a role a user could have to boost their entries.')
         .addStringOption(option =>
