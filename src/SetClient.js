@@ -12,6 +12,8 @@ const setRole = require('./cmds/SetRole');
 const removeRole = require('./cmds/RemoveRole');
 const help = require('./cmds/Help');
 
+const RaffleWatch = require('./backend/RaffleWatch');
+
 function ActivateClient(TOKEN) {
     client.on('ready', () => {
         console.log(`Logged in as ${client.user.tag}`);
@@ -66,6 +68,13 @@ function ActivateClient(TOKEN) {
 
     client.on(Events.InteractionCreate, async (msg) => {
         if (!msg.isButton()) return;
+        if (!RaffleWatch.raffleRunning) {
+            await msg.reply({
+                content: 'The raffle is over.',
+                ephemeral: true
+            });
+            return;
+        }
         if (msg.member.roles.cache.find(role => role.name === 'Verified Member') == undefined) {
             await msg.reply({ 
                 content: 'You must be a verified member to enter the raffle.', 
