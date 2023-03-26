@@ -27,6 +27,7 @@ module.exports.cmd = async (msg, client) => {
     
     var raffleName = msg.options.getString('raffle-name') ?? 'PEKIRAFFLE';
     var raffleDesc = msg.options.getString('raffle-desc') ?? 'Enter by clicking the button below!';
+    var coachName = msg.options.getString('coach-name');
 
     // The Raffle Annoucement Embed
     var reactEmbed = new EmbedBuilder()

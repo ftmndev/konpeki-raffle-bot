@@ -14,6 +14,10 @@ const commands = [
             option.setName('preset')
             .setDescription('The preset duration to use')
             .setRequired(true))
+        .addStringOption(option =>
+            option.setName('coach-name')
+            .setDescription('The coach giving the VOD review.')
+            .setRequired(true))
         .addStringOption(option => 
             option.setName('raffle-name')
             .setDescription('The name of the raffle'))
