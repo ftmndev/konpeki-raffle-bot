@@ -26,7 +26,7 @@ module.exports.cmd = async (msg, client) => {
     module.exports.raffleRole = await msg.guild.roles.create({ name: "Raffle", reason: "Creating Raffle Role" });
     
     var raffleName = msg.options.getString('raffle-name') ?? 'Vod Review Raffle';
-    var raffleDesc = msg.options.getString('raffle-desc') ?? 'Enter by clicking the button below!';
+    var raffleDesc = msg.options.getString('raffle-desc') ?? 'Hey! Once you press the button below, you will be entered into a raffle where you will have a chance to be vod reviewed by one of our PROFESSIONAL Coaches! Please be sure you have read all the rules and that your games are appropriate for picking! We will begin a mass drawing everyday!';
     var coachName = msg.options.getString('coach-name');
 
     var raffleVal = '';
@@ -46,13 +46,12 @@ module.exports.cmd = async (msg, client) => {
         .addFields(
             { name: 'Role Entries', value: raffleVal },
             { name: '\u200B', value: '\u200B' },
-            { name: `Coach: ${coachName}`, value: 'Konpeki', inline: true },
-            { name: 'Inline field title', value: 'Some value here', inline: true },
+            { name: 'Coach:', value: coachName, inline: true },
+            { name: 'Duration:', value: `${Math.round((presetTime/60) * 1000) / 1000} hour(s)`, inline: true },
         )
-        .addFields({ name: 'Inline field title', value: 'Some value here', inline: true })
-        .setImage('https://i.imgur.com/AfFp7pu.png')
+        .setImage('https://cdn.discordapp.com/attachments/1001641185615564933/1091452653978013796/general_Rules1.png')
         .setTimestamp()
-        .setFooter({ text: 'Good Luck!', iconURL: 'https://i.imgur.com/AfFp7pu.png' });
+        .setFooter({ text: 'Raffle tickets will be carried over into the next giveaway until you win.', iconURL: 'https://cdn.discordapp.com/attachments/1031732433789390848/1084974750075457556/konpeki_logo_small.png' });
 
     // Raffle Annoucement Embed Button
     var reactButton = new ActionRowBuilder()
