@@ -203,8 +203,12 @@ module.exports.SetRole = async (roleID, roleEntries) => {
 }
 
 module.exports.SortRoles = () => {
-    module.exports.roles = module.exports.roles.sort((role) => {
-        return role.entries;
+    module.exports.roles.sort((a, b) => {
+        a = a.entries;
+        b = b.entries;
+        if (a < b) return -1;
+        if (b > a) return 1;
+        return 0;
     })
 }
 
