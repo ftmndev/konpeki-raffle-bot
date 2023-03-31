@@ -29,6 +29,14 @@ module.exports.cmd = async (msg, client) => {
     var raffleDesc = msg.options.getString('raffle-desc') ?? 'Enter by clicking the button below!';
     var coachName = msg.options.getString('coach-name');
 
+    var raffleVal = '';
+
+    Util.SortRoles();
+
+    Util.roles.forEach((role) => {
+        raffleVal += `<@&${role.id}> - ${role.entries}\n`;
+    });
+
     // The Raffle Annoucement Embed
     var reactEmbed = new EmbedBuilder()
         .setTitle(raffleName)
@@ -36,7 +44,7 @@ module.exports.cmd = async (msg, client) => {
         .setURL('https://discord.gg/fX2GSskgEC')
         .setDescription(raffleDesc)
         .addFields(
-            { name: 'Role Entries', value: '<@&860451916743573565> - 1\n<@&1073458304614928385> - 2\n<@&1073458304614928386> - 3\n<@&1073458304614928387> - 5\n<@&930277398455402506> - 5' },
+            { name: 'Role Entries', value: raffleVal },
             { name: '\u200B', value: '\u200B' },
             { name: `Coach: ${coachName}`, value: 'Konpeki', inline: true },
             { name: 'Inline field title', value: 'Some value here', inline: true },

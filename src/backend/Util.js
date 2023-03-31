@@ -202,6 +202,12 @@ module.exports.SetRole = async (roleID, roleEntries) => {
     }
 }
 
+module.exports.SortRoles = () => {
+    module.exports.roles.sort((role) => {
+        return role.entries;
+    })
+}
+
 module.exports.RemoveRole = async (roleID) => {
     var index = module.exports.roles.findIndex(role => role.id === roleID);
 
