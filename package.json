@@ -6,6 +6,7 @@
     "start": "node ./src/main"
   },
   "dependencies": {
-    "discord.js": "^14.7.1"
+    "discord-embedbuilder": "^4.0.0",
+    "discord.js": "^14.8.0"
   }
 }
