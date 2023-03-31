@@ -36,7 +36,7 @@ module.exports.cmd = async (msg, client) => {
         .setURL('https://discord.gg/fX2GSskgEC')
         .setDescription(raffleDesc)
         .addFields(
-            { name: 'Role Entries', value: '<@&930277398455402506> - 5\n<@&860451916743573565> -1' },
+            { name: 'Role Entries', value: '<@&860451916743573565> - 1\n<@&1073458304614928385> - 2\n<@&1073458304614928386> - 3\n<@&1073458304614928387> - 5\n<@&930277398455402506> - 5' },
             { name: '\u200B', value: '\u200B' },
             { name: `Coach: ${coachName}`, value: 'Konpeki', inline: true },
             { name: 'Inline field title', value: 'Some value here', inline: true },
@@ -44,7 +44,7 @@ module.exports.cmd = async (msg, client) => {
         .addFields({ name: 'Inline field title', value: 'Some value here', inline: true })
         .setImage('https://i.imgur.com/AfFp7pu.png')
         .setTimestamp()
-        .setFooter({ text: 'Some footer text here', iconURL: 'https://i.imgur.com/AfFp7pu.png' });
+        .setFooter({ text: 'Good Luck!', iconURL: 'https://i.imgur.com/AfFp7pu.png' });
 
     // Raffle Annoucement Embed Button
     var reactButton = new ActionRowBuilder()
