@@ -34,7 +34,10 @@ function ActivateClient(TOKEN) {
         }
 
         if (!msg.member.permissions.has('8')) {
-            await msg.reply('You dont have the permissions to do that.');
+            await msg.reply({
+                content: 'You dont have the permissions to do that.',
+                ephemeral: true
+            });
             return;
         }
         

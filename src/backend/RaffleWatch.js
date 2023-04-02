@@ -66,7 +66,9 @@ async function watchRaffle(udata, role, timeMin, msg) {
                 .then(() => console.log('Raffle Role Removed'))
                 .catch(console.error);
 
-            var winner = RollWinner(udata);
+            var basket = Util.GetBasket(udata);
+
+            var winner = RollWinner(basket);
 
             udata = Util.MarkWinner(winner, udata);
 

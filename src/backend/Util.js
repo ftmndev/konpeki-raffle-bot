@@ -83,6 +83,7 @@ module.exports.GetBasket = (udata) => {
 
 module.exports.RerollWinner = async () => {
     var udata = await this.GetUData(userdataPath);
+    
     var basket = [];
 
     udata.forEach((user) => {
@@ -90,16 +91,20 @@ module.exports.RerollWinner = async () => {
         for (let i = 0; i < user.entries; i++) basket.push(user.tag);
     });
 
+    if (basket.length == 0) return 'No Winner';
+
     var winner = RollWinner(basket);
+
+    console.log(winner);
 
     udata = this.MarkWinner(winner, udata);
 
     console.log('Sorting UData');
-    udata = await Util.SortUData(udata);
+    udata = await this.SortUData(udata);
 
-    udata = Util.MarkFinished(udata);
+    udata = this.MarkFinished(udata);
     console.log('Saving UData');
-    await Util.SetUData(userdataPath, udata);
+    await this.SetUData(userdataPath, udata);
 
     console.log('UData Saved.');
     return winner;
