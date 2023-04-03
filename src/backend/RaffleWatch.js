@@ -19,7 +19,7 @@ async function watchRaffle(udata, role, timeMin, msg) {
     var endDate = Date.now() + raffleTime;
     var enteredUsers = [];
 
-    console.log(`Raffle started at ${Date.now()}.\nRaffle ends at ${endDate}\nRaffle lasts for ${timeMin}min.`);
+    console.log(`Raffle started at ${Date.now()}.\nRaffle ends at ${endDate}\nRaffle lasts for ${timeMin}hours.`);
 
     const update = async () => {
         while(Date.now() <= endDate && module.exports.raffleRunning) {
