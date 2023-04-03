@@ -1,6 +1,6 @@
 {
   "name": "pekiraffle",
-  "version": "V1.1.2",
+  "version": "V1.1.4",
   "private": "true",
   "scripts": {
     "start": "node ./src/main"

@@ -29,14 +29,14 @@ const commands = [
         .setDescription('Rerolls the winner'),
     new SlashCommandBuilder()
         .setName('set-preset')
-        .setDescription('Sets the desired preset with the given duration (mins).')
+        .setDescription('Sets the desired preset with the given duration (hours).')
         .addStringOption(option =>
             option.setName('preset-name')
             .setDescription('The name of the preset to add.')
             .setRequired(true))
         .addNumberOption(option => 
             option.setName('duration')
-            .setDescription('The duration of the raffle in minutes.')
+            .setDescription('The duration of the raffle in hours.')
             .setRequired(true)),
     new SlashCommandBuilder()
         .setName('list-presets')

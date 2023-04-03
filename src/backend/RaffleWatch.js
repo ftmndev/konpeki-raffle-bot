@@ -15,7 +15,7 @@ module.exports = async (role, timeMin, msg) => {
 }
 
 async function watchRaffle(udata, role, timeMin, msg) {
-    var raffleTime = timeMin * 60000;
+    var raffleTime = timeMin * 3600000;
     var endDate = Date.now() + raffleTime;
     var enteredUsers = [];
 
