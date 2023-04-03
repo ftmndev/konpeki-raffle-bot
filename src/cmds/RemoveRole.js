@@ -4,13 +4,13 @@ module.exports.cmd = async (msg) => {
     var roleID = msg.options.getString('role-id');
 
     if (!await Util.RemoveRole(roleID)) {
-        msg.reply({
+        await msg.reply({
             content: `Error: ${roleID}: Does not exist.`,
             ephemeral: true
         });
     }
     else {
-        msg.reply({
+        await msg.reply({
             content: `Removed role ${roleID}.`,
             ephemeral: true
         });

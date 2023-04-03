@@ -6,14 +6,14 @@ module.exports.cmd = async (msg) => {
     var index = Util.FindUData(msg.member.id, udata);
 
     if (index == null || !udata[index].participating) {
-        msg.reply({
+        await msg.reply({
             content: 'You have not entered in the raffle.',
             ephemeral: true
         });
         return;
     }
     
-    msg.reply({
+    await msg.reply({
         content: `You have ${udata[index].entries} entries.`,
         ephemeral: true
     });

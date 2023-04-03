@@ -1,13 +1,7 @@
-- Brain:
-    Bot interface
-    Bot channel
+reset-entries for individual and in full
 
-- E:
-    Bot Commands
-    Raffle backend
+dynamic timer and entries.
 
-- Bofh:
-    Help command when done
+buttons for ending and rerolling, possible admin only view
 
-NOTE: This will start the bot
-npm start
+presets change from mins to hours

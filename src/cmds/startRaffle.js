@@ -65,7 +65,7 @@ module.exports.cmd = async (msg, client) => {
 
     await msg.channel.send({ embeds: [reactEmbed], components: [reactButton] });
 
-    msg.reply({ content: 'Started Raffle', ephemeral: true });
+    await msg.reply({ content: 'Started Raffle', ephemeral: true });
 
     console.log('Started Raffle');
 

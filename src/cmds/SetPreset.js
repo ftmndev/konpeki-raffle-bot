@@ -6,7 +6,7 @@ module.exports.cmd = async (msg) => {
 
     await Util.SetPreset(presetName, presetTime);
 
-    msg.reply({
+    await msg.reply({
         content: `Set the preset: ${presetName} to ${presetTime}min${presetTime>1?'s':''}`,
         ephemeral: true
     });

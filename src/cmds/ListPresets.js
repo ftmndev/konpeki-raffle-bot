@@ -16,7 +16,7 @@ module.exports.cmd = async (msg) => {
         .setTitle('Presets: ')
         .setDescription(presets);
 
-    msg.reply({ 
+    await msg.reply({ 
         embeds: [embed], 
         ephemeral: true 
     });

@@ -1,5 +1,5 @@
 module.exports.cmd = async (msg, client) => {
-    msg.reply({ content: 'Pong🏓', ephemeral: true }).then((m) => {
+    await msg.reply({ content: 'Pong🏓', ephemeral: true }).then((m) => {
         msg.editReply({
             content: `Pong🏓\nAPI Latency is ${Math.round(client.ws.ping)}ms`,
             ephemeral: true

@@ -21,89 +21,87 @@ function ActivateClient(TOKEN) {
     });
 
     client.on(Events.InteractionCreate, async (msg) => {
-        if (!msg.isChatInputCommand()) return;
+        if (msg.isChatInputCommand()) {
+            // Commands for everyone
+            switch (msg.commandName) {
+                case 'ping':
+                    ping.cmd(msg, client);
+                    break;
+                case 'entries':
+                    entries.cmd(msg);
+                    break;
+            }
 
-        // Commands for everyone
-        switch (msg.commandName) {
-            case 'ping':
-                ping.cmd(msg, client);
-                break;
-            case 'entries':
-                entries.cmd(msg);
-                break;
+            if (!msg.member.permissions.has('8')) {
+                await msg.reply({
+                    content: 'You dont have the permissions to do that.',
+                    ephemeral: true
+                });
+                return;
+            }
+            
+            // Commands for admins or higher
+            switch (msg.commandName) {
+                case 'start-raffle':
+                    startRaffle.cmd(msg, client);
+                    break;
+                case 'reroll':
+                    reroll.cmd(msg);
+                    break;
+                case 'set-preset':
+                    setPreset.cmd(msg);
+                    break;
+                case 'list-presets':
+                    listPresets.cmd(msg);
+                    break;
+                case 'remove-preset':
+                    removePreset.cmd(msg);
+                    break;
+                case 'set-role':
+                    setRole.cmd(msg);
+                    break;
+                case 'remove-role':
+                    removeRole.cmd(msg);
+                    break;
+                case 'list-user-entries':
+                    listUserEntries.cmd(msg);
+                    break;
+                case 'end-raffle':
+                    endRaffle.cmd(msg);
+                    break;
+            }
         }
-
-        if (!msg.member.permissions.has('8')) {
-            await msg.reply({
-                content: 'You dont have the permissions to do that.',
-                ephemeral: true
-            });
-            return;
-        }
-        
-        // Commands for admins or higher
-        switch (msg.commandName) {
-            case 'start-raffle':
-                startRaffle.cmd(msg, client);
-                break;
-            case 'reroll':
-                reroll.cmd(msg);
-                break;
-            case 'set-preset':
-                setPreset.cmd(msg);
-                break;
-            case 'list-presets':
-                listPresets.cmd(msg);
-                break;
-            case 'remove-preset':
-                removePreset.cmd(msg);
-                break;
-            case 'set-role':
-                setRole.cmd(msg);
-                break;
-            case 'remove-role':
-                removeRole.cmd(msg);
-                break;
-            case 'list-user-entries':
-                listUserEntries.cmd(msg);
-                break;
-            case 'end-raffle':
-                endRaffle.cmd(msg);
-                break;
-        }
-    });
-
-    client.on(Events.InteractionCreate, async (msg) => {
-        if (!msg.isButton()) return;
-        if (!RaffleWatch.raffleRunning) {
-            await msg.reply({
-                content: 'The raffle is over.',
-                ephemeral: true
-            });
-            return;
-        }
-        if (msg.member.roles.cache.find(role => role.name === 'Verified Member') == undefined) {
+        else if (msg.isButton()) {
+            if (!RaffleWatch.raffleRunning) {
+                await msg.reply({
+                    content: 'The raffle is over.',
+                    ephemeral: true
+                });
+                return;
+            }
+            if (msg.member.roles.cache.find(role => role.name === 'Verified Member') == undefined) {
+                await msg.reply({ 
+                    content: 'You must be a verified member to enter the raffle.', 
+                    ephemeral: true
+                });
+                return;
+            }
+            if (msg.member.roles.cache.find(role => role.id === startRaffle.raffleRole.id) != undefined) { 
+                await msg.reply({
+                    content: 'You have already joined the raffle.',
+                    ephemeral: true
+                });
+                return;
+            }
+    
+            msg.member.roles.add(startRaffle.raffleRole);
             await msg.reply({ 
-                content: 'You must be a verified member to enter the raffle.', 
-                ephemeral: true
+                content: 'You entered the raffle.', 
+                ephemeral: true 
             });
-            return;
         }
-        if (msg.member.roles.cache.find(role => role.id === startRaffle.raffleRole.id) != undefined) { 
-            await msg.reply({
-                content: 'You have already joined the raffle.',
-                ephemeral: true
-            });
-            return;
-        }
-
-        msg.member.roles.add(startRaffle.raffleRole);
-        await msg.reply({ 
-            content: 'You entered the raffle.', 
-            ephemeral: true 
-        });
+        else return;
     });
-
 
     client.login(TOKEN);
 }

@@ -6,7 +6,7 @@ module.exports.cmd = async (msg) => {
 
     await Util.SetRole(roleID, roleEntries);
 
-    msg.reply({
+    await msg.reply({
         content: `Added ${roleID}.`,
         ephemeral: true
     });
